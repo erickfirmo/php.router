@@ -2,7 +2,7 @@
 
 //namespace Routing;
 
-class Router {
+class Route {
 
     public $namespace = 'App\Controllers\\';
     public $routeName;
