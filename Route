@@ -1,7 +1,6 @@
 <?php
 
-namespace Routing;
-use App\Http\Request;
+//namespace Routing;
 
 class Router {
 
