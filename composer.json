@@ -1,22 +1,26 @@
+
 {
     "name": "erickfirmo/router",
     "description": "PHP Router",
-    "keywords": ["router", "routing"],
+    "keywords": ["routing", "router"],
     "type": "library",
     "authors": [
         {
-            "name": "Érick Firmo",
-            "email": "erickluques@gmail.com"
+        "name": "Érick Firmo",
+        "email": "erickluques@gmail.com"
         }
     ],
-    "require": {
+    "autoload": {
+          "psr-4": {
+              "ErickFirmo\\": "src/"
+           }
+      },
+      "require": {
         "php": ">=5.4.0",
         "erickfirmo/router": "*"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0",
-    },
-    "autoload": {
-        "psr-0": {"Route": "/src"}
+      "phpunit/phpunit": "^5.0"
     }
- }
+}
+
