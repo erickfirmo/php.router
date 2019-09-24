@@ -1,11 +1,11 @@
 <?php
 
-$router = new \Routing\Router;
-$router->get(['/examples', 'ExampleController@select']);
-//$router->get(['/examples/{$id}', 'ExampleController@findById']);
-//$router->post(['/examples/store', 'ExampleController@store']);
-//$router->put(['/examples/{$id}', 'ExampleController@update']);
-//$router->patch(['/examples/{$id}', 'ExampleController@update']);
-//$router->delete(['/examples/{$id}', 'ExampleController@delete']);
-$router->run();
+$route = new \Routing\Route;
+$route->get(['/examples', 'ExampleController@select']);
+//$route->get(['/examples/{$id}', 'ExampleController@findById']);
+//$route->post(['/examples/store', 'ExampleController@store']);
+//$route->put(['/examples/{$id}', 'ExampleController@update']);
+//$route->patch(['/examples/{$id}', 'ExampleController@update']);
+//$route->delete(['/examples/{$id}', 'ExampleController@delete']);
+$route->run();
 
