@@ -181,7 +181,8 @@ class Route {
         $this->checkRequestType();
         $controller = $this->getController();
         $method = $this->getMethod();
-        return (new Request())->getResponse($controller, $method, $this->getParameterValue());
+        $parameterValue = $this->getParameterValue();
+        return isset($parameterValue) && !is_null($parameterValue) ? (new $controller()->$method($parameterValue)) : (new $controller()->$method());
     }
     
 }
