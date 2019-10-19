@@ -20,6 +20,10 @@ class Route {
         return $this->namespace;
     }
     
+    public function setNamespace($namespace) {
+        $this->namespace = $namespace;
+    }
+    
     public function get($route) {
         $this->getRoutes[$route[0]] = $route[1];
         return $this;
