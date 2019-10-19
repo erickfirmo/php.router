@@ -25,7 +25,7 @@ composer require erickfirmo/router
   require __DIR__ . '/vendor/autoload.php';
 
   // Criando a instância do roteador
-  $route = new \Routing\Route;
+  $route = new \ErickFirmo\Route;
 
   // Definição de rotas
 
