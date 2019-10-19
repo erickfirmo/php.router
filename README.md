@@ -1,6 +1,6 @@
 # Router
 
-Um roteador PHP leve e simples orientado a objetos. Construído por Érick Firmo (BR) http://erickfirmo.dev
+Um roteador PHP leve e simples orientado a objetos. Desenvolvido por Érick Firmo (BR) http://erickfirmo.dev
 
 
 ## Requerimentos
@@ -46,7 +46,7 @@ Exemplos de uso:
 ```
 
 ### Namespace
-Se a todas as suas classes de manipulação estiverem em um mesmo namespace, você poderá definir o namespace padrão para usar na instância do roteador via `setNamespace()`:
+Se todas as suas classes de manipulação estiverem em um mesmo namespace, você poderá definir o namespace padrão para usar na instância do roteador via `setNamespace()`:
 ```php
   $route->setNamespace('App\Controllers\\');
   $route->get(['/example', 'ExampleController@select']);
