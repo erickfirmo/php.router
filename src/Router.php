@@ -2,7 +2,7 @@
 
 namespace ErickFirmo;
 
-class Route {
+class Router {
 
     public $namespace = 'App\Controllers\\';
     public $routeName;
