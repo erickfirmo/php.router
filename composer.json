@@ -23,6 +23,7 @@
       "phpunit/phpunit": "^5.0"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "version": "1.0.0"
 }
 
