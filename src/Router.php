@@ -186,7 +186,7 @@ class Router {
         $controller = $this->getController();
         $method = $this->getMethod();
         $parameterValue = $this->getParameterValue();
-        return isset($parameterValue) && !is_null($parameterValue) ? (new $controller()->$method($parameterValue)) : (new $controller()->$method());
+        return isset($parameterValue) && !is_null($parameterValue) ? (new $controller())->$method($parameterValue) : (new $controller())->$method();
     }
     
 }
