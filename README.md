@@ -5,7 +5,7 @@ Um roteador PHP leve e simples orientado a objetos. Desenvolvido por Érick Firm
 
 ## Requerimentos
 - PHP 5.4 ou superior
-- <a href="https://github.com/erickfirmo/.htaccess" target="_blank">Reescrita de URL</a>
+- <a href="https://github.com/erickfirmo/.htaccess/blob/master/.htaccess" target="_blank">Reescrita de URL</a>
 
 
 ## Instalação
