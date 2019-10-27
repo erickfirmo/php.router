@@ -25,32 +25,32 @@ composer require erickfirmo/router
   require __DIR__ . '/vendor/autoload.php';
 
   // Criando a instância do roteador
-  $route = new \ErickFirmo\Route;
+  $router = new \ErickFirmo\Router;
 
   // Definição de rotas
 
   // Executa o roteador
-  $route->run();
+  $router->run();
 
 ```
 
 ### Definindo rotas
 Exemplos de uso:
 ```php
-  $route->get(['/example', 'ExampleController@select']);
-  $route->get(['/example/{$id}', 'ExampleController@findById']);
-  $route->post(['/example/store', 'ExampleController@store']);
-  $route->put(['/example/{$id}', 'ExampleController@update']);
-  $route->patch(['/example/{$id}', 'ExampleController@update']);
-  $route->delete(['/example/{$id}', 'ExampleController@delete']);
+  $router->get(['/example', 'ExampleController@select']);
+  $router->get(['/example/{$id}', 'ExampleController@findById']);
+  $router->post(['/example/store', 'ExampleController@store']);
+  $router->put(['/example/{$id}', 'ExampleController@update']);
+  $router->patch(['/example/{$id}', 'ExampleController@update']);
+  $router->delete(['/example/{$id}', 'ExampleController@delete']);
 ```
 
 ### Namespace
 Se todas as suas classes de manipulação estiverem em um mesmo namespace, você poderá definir o namespace padrão para usar na instância do roteador via `setNamespace()`:
 ```php
-  $route->setNamespace('App\Controllers\\');
-  $route->get(['/example', 'ExampleController@select']);
-  $route->post(['/example/store', 'ExampleController@store']);
+  $router->setNamespace('App\Controllers\\');
+  $router->get(['/example', 'ExampleController@select']);
+  $router->post(['/example/store', 'ExampleController@store']);
 ```
 
 <!--## Licença
