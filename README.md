@@ -1,15 +1,14 @@
 # Router
-
-Um roteador PHP leve e simples orientado a objetos. Desenvolvido por Érick Firmo (BR) http://erickfirmo.dev
-
-
-## Requerimentos
-- PHP 5.4 ou superior
-- <a href="https://github.com/erickfirmo/.htaccess/blob/master/.htaccess" target="_blank">Reescrita de URL</a>
+Simple object-oriented PHP router. developed by Érick Firmo (BR) http://erickfirmo.dev
 
 
-## Instalação
-Para instalar com o composer:
+## Requirements
+- PHP >= 5.4
+- <a href="https://github.com/erickfirmo/.htaccess/blob/master/.htaccess" target="_blank">URL rewrite</a>
+
+
+## Install
+To install with composer:
 
 
 ```sh
@@ -17,25 +16,25 @@ composer require erickfirmo/router
 ```
 
 
-## Uso Básico
+## Usage
 ```php
 <?php
 
-  // Requer o autoloader do composer
+  // Requires composer autoloader
   require __DIR__ . '/vendor/autoload.php';
 
-  // Criando a instância do roteador
+  // Creating the router instance
   $router = new \ErickFirmo\Router;
 
-  // Definição de rotas
+  // Defining routes
 
-  // Executa o roteador
+  // Run the router
   $router->run();
 
 ```
 
-### Definindo rotas
-Exemplos de uso:
+### Defining routes
+Examples:
 ```php
   $router->get(['/example', 'ExampleController@select']);
   $router->get(['/example/{$id}', 'ExampleController@findById']);
@@ -46,15 +45,14 @@ Exemplos de uso:
 ```
 
 ### Namespace
-Se todas as suas classes de manipulação estiverem em um mesmo namespace, você poderá definir o namespace padrão para usar na instância do roteador via `setNamespace()`:
+If all of your manipulation classes are in the same namespace, you can set the default namespace to use in the router instance with `setNamespace ()`:
 ```php
   $router->setNamespace('App\Controllers\\');
   $router->get(['/example', 'ExampleController@select']);
   $router->post(['/example/store', 'ExampleController@store']);
 ```
 
-<!--## Licença
-` erickfirmo/router` é uma biblioteca de código aberto licenciado sob a licença <a href="https://opensource.org/licenses/MIT" target="_blank">MIT</a>.-->
+<!--## License -->
 
 
 <!--<a href="https://erickfirmo.dev" target="_blank">Érick Firmo</a>-->
