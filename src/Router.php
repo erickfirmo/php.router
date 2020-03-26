@@ -113,12 +113,12 @@ class Router {
         return $_SERVER['REQUEST_METHOD'];
     }
     
-    public function request_uri() {
-        return $_SERVER['REQUEST_URI'];
+    public function request_path() {
+        return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     }
     
     public function setRouteName() {
-        $this->routeName = str_replace($this->getParameterValue(), '{$id}', $this->request_uri());
+        $this->routeName = str_replace($this->getParameterValue(), '{$id}', $this->request_path());
     }
     
     public function getRouteName() {
@@ -126,7 +126,7 @@ class Router {
     }
     
     public function setParameters() {
-        $url = explode('/', $this->request_uri());
+        $url = explode('/', $this->request_path());
         $urlParam = array_reverse($url);
         foreach ($urlParam as $key => $param) {
            if(is_numeric($param)) {
