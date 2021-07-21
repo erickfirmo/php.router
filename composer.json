@@ -7,7 +7,7 @@
     "authors": [
         {
         "name": "Érick Firmo",
-        "email": "erickluques@gmail.com"
+        "email": "erickfirmo1996@gmail.com"
         }
     ],
     "autoload": {
@@ -23,6 +23,6 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "version": "1.1.0"
+    "version": "1.2.0"
 }
 
