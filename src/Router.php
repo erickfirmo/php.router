@@ -89,6 +89,10 @@ class Router {
     public function getDeleteRoutes() {
         return $this->deleteRoutes;
     }
+
+    public function notFoundView($view) {
+        return $this->notFoundView = $view;
+    }
     
     public function validateRoute($routes, $name) {
         if(!isset($routes[$name])) {
