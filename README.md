@@ -36,6 +36,8 @@ composer require erickfirmo/router
 ### Defining routes
 Examples:
 ```php
+<?php
+
   $router->get(['/example', 'ExampleController@select']);
   $router->get(['/example/{$id}', 'ExampleController@findById']);
   $router->post(['/example/store', 'ExampleController@store']);
@@ -47,9 +49,24 @@ Examples:
 ### Namespace
 If all of your manipulation classes are in the same namespace, you can set the default namespace to use in the router instance with `setNamespace ()`:
 ```php
+<?php
+
   $router->setNamespace('App\Controllers\\');
   $router->get(['/example', 'ExampleController@select']);
   $router->post(['/example/store', 'ExampleController@store']);
+```
+
+## Error page
+By default, will be return a message error for routes not defined. You can set a custom page for this error, using `notFoundView()` method after instantiate the router:
+```php
+<?php
+
+  // Creating the router instance
+  $router = new \ErickFirmo\Router;
+
+  // Defining custom error page 404
+  $router->notFoundView(__DIR__.'/../views/errors/404.php');
+
 ```
 
 <!--## License -->
