@@ -13,8 +13,9 @@ class Router {
     public $deleteRoutes = [];
     public $method;
     public $controller;
-    public $parameterIndex = NULL;
-    public $parameterValue = NULL;
+    public $parameterIndex = null;
+    public $parameterValue = null;
+    public $notFoundView = null;
     
     public function getNamespace() {
         return $this->namespace;
@@ -90,7 +91,19 @@ class Router {
     }
     
     public function validateRoute($routes, $name) {
-        return isset($routes[$name]) ? $routes[$name] : die('Rota não definida.');
+        if(!isset($routes[$name])) {
+            // exception
+            http_response_code(404);
+            if(!$this->notFoundView) {
+                header("HTTP/1.0 404 Not Found");
+                echo '404 Not Found';
+                exit();
+            }
+            include $this->notFoundView;
+            exit();
+        } 
+        
+        return $routes[$name];
     }
     
     public function setController($controller) {
