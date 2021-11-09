@@ -208,21 +208,42 @@ class Router {
             exit();
         }
 
-        // Adiciona objeto Request a lista de argumentos
+        // Pega e inverte array de argumentos da rota
         $this->arguments = $this->route['segments'];
-        $this->arguments = array_reverse($this->arguments);
-        array_push($this->arguments, $request);
-        $this->arguments = array_reverse($this->arguments);
 
         // Definindo controller e método
-        $controller = $this->route['controller'];
-        $method = $this->route['method'];
+        $controllerName = $this->route['controller'];
+        $methodName = $this->route['method'];
+
+        // Invoca array de parametros do método que será chamado
+        $params = $this->get_method_argNames($controllerName, $methodName);
+
+        // Verifica se existe objeto Request como argmento do método
+        if(isset($params[0]) && $params[0] == 'request')
+        {
+            // Adiciona objeto Request a lista de argumentos
+            $this->arguments = array_reverse($this->arguments);
+            array_push($this->arguments, $request);
+            $this->arguments = array_reverse($this->arguments);
+        }
         
         try {
-            return call_user_func_array(array(new $controller(), $method), $this->arguments);
+            return call_user_func_array(array(new $controllerName(), $methodName), $this->arguments);
         } catch (\Exception $e) {
             throw $e;
         }
+    }
 
+    // Pega array de parametros de um método
+    protected function get_method_argNames($class, $method) {
+        $ReflectionMethod =  new \ReflectionMethod($class, $method);
+
+        $params = $ReflectionMethod->getParameters();
+
+        $paramNames = array_map(function( $item ){
+            return $item->getName();
+        }, $params);
+
+        return $paramNames;
     }
 }
