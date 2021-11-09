@@ -38,12 +38,15 @@ Examples:
 ```php
 <?php
 
-  $router->get(['/example', 'ExampleController@select']);
-  $router->get(['/example/{$id}', 'ExampleController@findById']);
-  $router->post(['/example/store', 'ExampleController@store']);
-  $router->put(['/example/{$id}', 'ExampleController@update']);
-  $router->patch(['/example/{$id}', 'ExampleController@update']);
-  $router->delete(['/example/{$id}', 'ExampleController@delete']);
+  $router->get('/examples', ExampleController::class, 'index', 'examples.index');
+  $router->get('/examples/{id}', ExampleController::class, 'show', 'examples.show');
+  $router->post('/examples/store', ExampleController::class, 'store', 'examples.store');
+  $router->put('/examples/update/{id}', ExampleController::class, 'update', 'examples.update');
+  $router->patch('/examples/update/{id}', ExampleController::class, 'update', 'examples.update');
+  $router->delete('/examples/destroy/{id}', ExampleController::class, 'delete', 'examples.destroy');
+```
+
+
 ```
 
 ### Namespace
