@@ -22,24 +22,14 @@ class Router {
     public $httpMethod = 'get';
     public $route = [];
     
-    public function getNamespace() {
-        return $this->namespace;
-    }
-    
+    // Define namespace dos controllers
     public function setNamespace($namespace) {
         $this->namespace = $namespace;
     }
 
-    public function getRouteName() {
-        return $this->routeName;
-    }
-    
-    public function getAction($action) {
-        $actions = explode('@', $action);
-        return [
-            'controller' => $this->getNamespace() . $actions[0],
-            'action' => $actions[1],
-        ];
+    // Retorna namespace dos controllers
+    public function getNamespace() {
+        return $this->namespace;
     }
 
     // Cria a rota
@@ -66,6 +56,7 @@ class Router {
         return $segments_map;
     }
 
+    // Define nome da rota e argumentos que serão passados
     public function setRoute($route, array $segments_map) {
         $array_url = explode('/', $this->request_path());
         array_shift($array_url);
@@ -73,8 +64,11 @@ class Router {
         $args = [];
 
         foreach ($segments_map as $key => $segment) {
-            array_push($args, $array_url[$key]);
-            $array_url[$key] = $segment;
+            if(array_key_exists($key, $array_url)) {
+                array_push($args, $array_url[$key]);
+                $array_url[$key] = $segment;
+            }
+            
         }
 
         $routeName = '/' . implode('/', $array_url);
@@ -94,12 +88,8 @@ class Router {
     public function request_path() {
         return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     }
-
-    public function getRoute($name, $httpMethod) : array
-    {
-        return $this->routeList[$httpMethod][$name];
-    }
     
+    // Define arquivo de visualização para erro 404
     public function notFoundView($view)
     {
         return $this->notFoundView = $view;
@@ -185,9 +175,10 @@ class Router {
         $this->setRoute($route, $segments_map);
     }
 
+    // Verifica e define verbo http
     public function checkHttpMethod(array $request) {
 
-        if($this->request_method() == 'POST' && isset($request['_method']))
+        if($this->request_method() == 'POST')
             $this->httpMethod = (isset($request['_method']) && in_array($request['_method'], $this->acceptedHttpMethods)) ? $request['_method'] : 'post';
 
         if(!$this->route)
@@ -196,6 +187,7 @@ class Router {
         return $this->route['http_method'] == $this->httpMethod ? true : false;
     }
 
+    // Executa rota já definida
     public function run(Object $request) {
 
         // Define request padrão do router caso não esteja definida
@@ -218,26 +210,18 @@ class Router {
 
         // Adiciona objeto Request a lista de argumentos
         $this->arguments = $this->route['segments'];
+        $this->arguments = array_reverse($this->arguments);
         array_push($this->arguments, $request);
         $this->arguments = array_reverse($this->arguments);
 
         // Definindo controller e método
         $controller = $this->route['controller'];
         $method = $this->route['method'];
-
-        /*
-        OR
-        $action = $this->getAction($this->route['action']);
-        $controller = $action['controller'];
-        $method = $action['method'];
-        */
-
-        //var_dump($this->arguments);exit;
         
         try {
             return call_user_func_array(array(new $controller(), $method), $this->arguments);
         } catch (\Exception $e) {
-            throw $e->getMessage();
+            throw $e;
         }
 
     }
