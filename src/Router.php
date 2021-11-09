@@ -218,7 +218,7 @@ class Router {
         // Invoca array de parametros do método que será chamado
         $params = $this->get_method_argNames($controllerName, $methodName);
 
-        // Verifica se existe objeto Request como argmento do método
+        // Verifica se existe objeto Request como argumento do método
         if(isset($params[0]) && $params[0] == 'request')
         {
             // Adiciona objeto Request a lista de argumentos
