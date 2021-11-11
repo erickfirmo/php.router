@@ -17,7 +17,6 @@ class Router {
     public $parameterIndex = null;
     public $parameterValue = null;
     public $notFoundView = null;
-    public $errorsPage = null;
     public $arguments = [];
     public $acceptedHttpMethods = ['get', 'post', 'put', 'patch', 'delete'];
     public $httpMethod = 'get';
@@ -94,12 +93,6 @@ class Router {
     public function notFoundView($view)
     {
         return $this->notFoundView = $view;
-    }
-
-    // Define arquivo de visualização para erros e exceções (500)
-    public function errorsPage($view)
-    {
-        return $this->errorsPage = $view;
     }
 
     // Cria rota GET
@@ -197,87 +190,83 @@ class Router {
     // Executa rota já definida
     public function run(Object $request) {
 
-        // Define request padrão do router caso não esteja definida
-        if(!$request) {
-            $request = new \Core\Request;
-        }
 
-        // Define verbo http da requisição atual
-        if(!$this->checkHttpMethod($request->all())) {
-            // exception
-            http_response_code(404);
-            if(!$this->notFoundView) {
-                header("HTTP/1.0 404 Not Found");
-                print '404 Not Found';
+        try {
+
+            // Define request padrão do router caso não esteja definida
+            if(!$request) {
+                $request = new \Core\Request;
+            }
+
+            // Define verbo http da requisição atual
+            if(!$this->checkHttpMethod($request->all())) {
+                // exception
+                http_response_code(404);
+                if(!$this->notFoundView) {
+                    header("HTTP/1.0 404 Not Found");
+                    print '404 Not Found';
+                    exit();
+                }
+                include $this->notFoundView;
                 exit();
             }
-            include $this->notFoundView;
-            exit();
-        }
 
-        // Pega e inverte array de argumentos da rota
-        $this->arguments = $this->route['segments'];
+            // Pega e inverte array de argumentos da rota
+            $this->arguments = $this->route['segments'];
 
-        // Definindo controller e método
-        $controllerName = $this->route['controller'];
-        $methodName = $this->route['method'];
+            // Definindo controller e método
+            $controllerName = $this->route['controller'];
+            $methodName = $this->route['method'];
 
-        // Invoca array de parametros do método que será chamado
-        #$paramNames = $this->get_method_argNames($controllerName, $methodName);
+            // Invoca array de parametros do método que será chamado
+            #$paramNames = $this->get_method_argNames($controllerName, $methodName);
 
-        $ReflectionMethod =  new \ReflectionMethod($controllerName, $methodName);
-        $params = $ReflectionMethod->getParameters();
-        $paramNames = array_map(function( $item ){
-            return $item->getName();
-        }, $params);
+            $ReflectionMethod =  new \ReflectionMethod($controllerName, $methodName);
+            $params = $ReflectionMethod->getParameters();
+            $paramNames = array_map(function( $item ){
+                return $item->getName();
+            }, $params);
 
-        // Verifica se existe objeto Request como argmento do método
-        if(isset($paramNames[0]) && $paramNames[0] == 'request')
-        {
-            // Adiciona objeto Request a lista de argumentos
-            $this->arguments = array_reverse($this->arguments);
-            array_push($this->arguments, $request);
-            $this->arguments = array_reverse($this->arguments);
-        }
-
-        #array_shift($params);
-
-        /*oreach ($params as $key => $p) {
-
-            if (gettype($this->arguments[$key]) != $p->getType()->getName()) {
-                die('invalido');
+            // Verifica se existe objeto Request como argmento do método
+            if(isset($paramNames[0]) && $paramNames[0] == 'request')
+            {
+                // Adiciona objeto Request a lista de argumentos
+                $this->arguments = array_reverse($this->arguments);
+                array_push($this->arguments, $request);
+                $this->arguments = array_reverse($this->arguments);
             }
-        }*/
-        
-        try {
-            return call_user_func_array(array(new $controllerName(), $methodName), $this->arguments);
-            // call a success/error/progress handler
-        } catch (\Throwable $e) {
 
-            return $this->getErrorsPage($e);
+            // Validando tipo de dado dos parametros
+            foreach ($params as $key => $p)
+            {
+                // Verifica se há tipo configurado
+                if($p->getType()) {
+                    // Verifica se é um inteiro
+                    if($p->getType()->getName() == 'int')
+                    {
+                        if (!is_numeric($this->arguments[$key])) {
+                            throw new \InvalidArgumentException('Invalid argument.');
+                        }
+    
+                    // Verifica se é uma string
+                    } elseif($p->getType()->getName() == 'string') {
+                        if (!is_string($this->arguments[$key])) {
+                            throw new \InvalidArgumentException('Invalid argument.');
+                        }
+                    }
+                }
+            }
+        
+            return call_user_func_array([new $controllerName(), $methodName], $this->arguments);
+            
+        } catch (\Throwable $th) {
+
+            throw $th;
 
         } catch (\Exception $e) {
-            print '$e->getMessage()';
-            exit;
             
+            throw $e;
         }
-    }
-
-    protected function getErrorsPage(Object $exception)
-    {
-        if(!$this->errorsPage)
-        {
-            // set Exception message
-            #header("HTTP/1.0 404 Not Found");
-            print $exception->getMessage();
-            exit();
-        }
-
-        $error = $exception->getMessage();
-
-        // Retorna página de exibição de erros 
-        include $this->errorsPage;
-        exit;
     }
 
     // Pega array de parametros de um método
@@ -293,15 +282,4 @@ class Router {
 
         return $paramNames;
     }
-
-    // Pega array de parametros de um método
-    protected function get_method_argType($class, $method, $key)
-    {
-        $ReflectionMethod =  new \ReflectionMethod($class, $method);
-
-        var_dump($p);exit;
-    }
-
-
-    
 }
