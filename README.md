@@ -72,21 +72,25 @@ By default, will be return a message error for routes not defined. You can set a
 
 ```
 ### Passing Request
-Podemos passar um request para nosso router usando o método `setRequest($name, $request)`. Esse valor será usado como primeiro argumento do método chamado. Example:
+We can pass a request to our router using the `setRequest($name, $request)` method. This value will be used as the first argument of the called method. Example:
 ```php
 <?php
 
-  // Criando array com dados da requisição
+  // Creating array with request data
   $request = $_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST : $_GET;
 
-  // Passando dados da requisição
+  // Passing request data
   $router->setRequest('request', $request);
 
-  // Definindo a rota
+  // Defining the route
   $router->put('/examples/{id}', ExampleController::class, 'myMethod', 'examples.myMethod');
 
+  // Run the router
+  $router->run();
+
 ```
-Using the request parameter:
+
+Example of using the request parameter:
 ```php
 <?php
 
@@ -102,7 +106,7 @@ Using the request parameter:
 
 ```
 
-Também podemos passar um objeto como parametro:
+We can also pass an object as a parameter:
 
 ```php
 <?php
@@ -116,6 +120,9 @@ Também podemos passar um objeto como parametro:
     }
 
   }
+
+```
+
 
 <!--## License -->
 
