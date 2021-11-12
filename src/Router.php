@@ -263,18 +263,22 @@ class Router
                 // Verifica se há tipo configurado
                 if($p->getType()) {
                     // Verifica se é um inteiro
-                    if($p->getType()->getName() == 'int')
+                    if(isset($this->arguments[$key]))
                     {
-                        if (!is_numeric($this->arguments[$key])) {
-                            throw new \InvalidArgumentException('Invalid argument. int');
-                        }
-    
-                    // Verifica se é uma string
-                    } elseif($p->getType()->getName() == 'string') {
-                        if (!is_string($this->arguments[$key])) {
-                            throw new \InvalidArgumentException('Invalid argument. string');
+                        if($p->getType()->getName() == 'int')
+                        {
+                            if (!is_numeric($this->arguments[$key])) {
+                                throw new \InvalidArgumentException('Argument '.($key+1).' passed to Router must be of the type '.$p->getType()->getName().', '.gettype($this->arguments[$key]).' given.');
+                            }
+        
+                        // Verifica se é uma string
+                        } elseif($p->getType()->getName() == 'string') {
+                            if (!is_string($this->arguments[$key])) {
+                                throw new \InvalidArgumentException('Argument '.($key+1).'2 passed to Router must be of the type '.$p->getType()->getName().', '.gettype($this->arguments[$key]).' given.');
+                            }
                         }
                     }
+                    
                 }
             }
         
