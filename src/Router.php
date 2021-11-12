@@ -6,7 +6,6 @@ class Router
 {
     private $namespace = '';
     private $routeName;
-
     private $routeList = [];
     private $method;
     private $controller;
