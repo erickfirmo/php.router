@@ -4,7 +4,7 @@ namespace ErickFirmo;
 
 class Router {
 
-    public $namespace = 'App\Controllers\\';
+    public $namespace = '';
     public $routeName;
     public $getRoutes = [];
     public $postRoutes = [];
