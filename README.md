@@ -55,8 +55,8 @@ If all of your manipulation classes are in the same namespace, you can set the d
 <?php
 
   $router->setNamespace('App\Controllers\\');
-  $router->get(['/example', 'ExampleController@select']);
-  $router->post(['/example/store', 'ExampleController@store']);
+  $router->get('/examples', ExampleController::class, 'index', 'examples.index');
+  $router->post('/examples/store', ExampleController::class, 'store', 'examples.store');
 ```
 
 ## Error page
