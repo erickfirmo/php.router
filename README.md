@@ -83,7 +83,7 @@ We can pass a request to our router using the `setRequest($name, $request)` meth
   $router->setRequest('request', $request);
 
   // Defining the route
-  $router->put('/examples/{id}', ExampleController::class, 'myMethod', 'examples.myMethod');
+  $router->get('/examples/{id}', ExampleController::class, 'myMethod', 'examples.myMethod');
 
   // Run the router
   $router->run();
