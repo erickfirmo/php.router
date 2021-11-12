@@ -11,7 +11,7 @@ class Router {
     public $putRoutes = [];
     public $patchRoutes = [];
     public $deleteRoutes = [];
-    public $routeList = ['get', 'post', 'put', 'patch', 'delete'];
+    public $routeList = [];
     public $method;
     public $controller;
     public $parameterIndex = null;
@@ -22,19 +22,23 @@ class Router {
     public $httpMethod = 'get';
     public $route = [];
     public $request;
+    public $requestVarName = 'request';
 
     // Define namespace dos controllers
-    public function setNamespace($namespace) {
+    public function setNamespace(string $namespace) : void
+    {
         $this->namespace = $namespace;
     }
 
     // Retorna namespace dos controllers
-    public function getNamespace() {
+    public function getNamespace() : string
+    {
         return $this->namespace;
     }
 
     // Cria a rota
-    public function createRoute($httpMethod, $path, $controller, $method, $name=null) {
+    public function createRoute(string $httpMethod, string $path, string $controller, string $method, string $name='') : array
+    {
         // Criando rota
         $name = !$name ? $path : $name;
         $route['name'] = $name;
@@ -47,7 +51,7 @@ class Router {
     }
 
     // Cria mapa de chaves dos parametros passados na rota
-    public function createSegmentsMap(string $path, $segments_map=[]) : array
+    public function createSegmentsMap(string $path, array $segments_map=[]) : array
     {
         $array_path = explode('/', $path);
         array_shift($array_path);
@@ -59,23 +63,25 @@ class Router {
     }
 
     // Retorna método de requisição http
-    public function request_method() {
+    public function request_method() : string
+    {
         return $_SERVER['REQUEST_METHOD'];
     }
     
     // Retorna path da url atual
-    public function request_path() {
+    public function request_path() : string
+    {
         return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     }
     
     // Define arquivo de visualização para erro 404
-    public function notFoundView($view)
+    public function notFoundView(string $view) : void
     {
-        return $this->notFoundView = $view;
+        $this->notFoundView = $view;
     }
 
     // Cria rota GET
-    public function get($path, $controller, $method, $name=null)
+    public function get(string $path, string $controller, string $method, string $name='') : void
     {
         // Criando rota
         $route = $this->createRoute('get', $path, $controller, $method, $name);
@@ -92,7 +98,7 @@ class Router {
     }
 
     // Cria rota POST
-    public function post($path, $controller, $method, $name=null)
+    public function post(string $path, string $controller, string $method, string $name='') : void
     {
         // Criando rota
         $route = $this->createRoute('post', $path, $controller, $method, $name);
@@ -108,7 +114,7 @@ class Router {
     }
 
     // Cria rota PUT
-    public function put($path, $controller, $method, $name=null)
+    public function put(string $path, string $controller, string $method, string $name='') : void
     {
         // Criando rota
         $route = $this->createRoute('put', $path, $controller, $method, $name);
@@ -124,7 +130,7 @@ class Router {
     }
 
     // Cria rota PATCH
-    public function patch($path, $controller, $method, $name=null)
+    public function patch(string $path, string $controller, string $method, string $name='') : void
     {
         // Criando rota
         $route = $this->createRoute('patch', $path, $controller, $method, $name);
@@ -140,7 +146,7 @@ class Router {
     }
 
     // Cria rota DELETE
-    public function delete($path, $controller, $method, $name=null)
+    public function delete(string $path, string $controller, string $method, string $name='') : void
     {
         // Criando rota
         $route = $this->createRoute('delete', $path, $controller, $method, $name);
@@ -156,11 +162,10 @@ class Router {
     }
 
     // Verifica e define verbo http
-    public function checkHttpMethod(array $request) : bool
+    public function checkHttpMethod() : bool
     {
-
         if($this->request_method() == 'POST')
-            $this->httpMethod = (isset($request['_method']) && in_array($request['_method'], $this->acceptedHttpMethods)) ? $request['_method'] : 'post';
+            $this->httpMethod = (isset($_POST['_method']) && in_array($_POST['_method'], $this->acceptedHttpMethods)) ? $_POST['_method'] : 'post';
 
         if(!$this->route)
             return false;
@@ -168,21 +173,15 @@ class Router {
         return $this->route['http_method'] == $this->httpMethod ? true : false;
     }
 
-    // Define request attributes
-    public function setRequestAttributes(array $attributes, Object $request) : void
+    // Define request
+    public function setRequest(string $requestVarName, $request) : void
     {
-        $request->setAll($attributes);
-        $this->request = $request;
-    }
-
-    /// Define request
-    public function setRequest($request) : void
-    {
+        $this->requestVarName = $requestVarName;
         $this->request = $request;
     }
 
     // Define nome da rota e argumentos que serão passados
-    public function setRoute($route, array $segments_map)
+    public function setRoute($route, array $segments_map) : void
     {
         $array_url = explode('/', $this->request_path());
         array_shift($array_url);
@@ -212,20 +211,14 @@ class Router {
 
         // Inserindo na lista de rotas
         $this->routeList[$route['http_method']][$route['path']] = $route;
-
     }
 
     // Executa rota já definida
-    public function run() {
-
+    public function run()
+    {
         try {
-            // Define request padrão do router caso não esteja definida
-            if(!$this->request) {
-                $this->request = new \Core\Request;
-            }
-        
             // Define verbo http da requisição atual
-            if(!$this->checkHttpMethod($this->request->all())) {
+            if(!$this->checkHttpMethod()) {
                 // exception
                 http_response_code(404);
                 if(!$this->notFoundView) {
@@ -251,10 +244,10 @@ class Router {
                 return $item->getName();
             }, $params);
 
-            // Verifica se existe objeto Request como argmento do método
-            if(isset($paramNames[0]) && $paramNames[0] == 'request')
+            // Verifica se existe $request como argmento do método
+            if(isset($paramNames[0]) && $paramNames[0] == $this->requestVarName && $this->request)
             {
-                // Adiciona objeto Request a lista de argumentos
+                // Adiciona objeto $request a lista de argumentos
                 $this->arguments = array_reverse($this->arguments);
                 array_push($this->arguments, $this->request);
                 $this->arguments = array_reverse($this->arguments);
@@ -294,11 +287,11 @@ class Router {
     }
 
     // Pega array de parametros de um método
-    protected function get_method_argNames($class, $method)
+    protected function get_method_argNames(string $class, string $method) : array
     {
-        $ReflectionMethod =  new \ReflectionMethod($class, $method);
+        $reflectionMethod =  new \ReflectionMethod($class, $method);
 
-        $params = $ReflectionMethod->getParameters();
+        $params = $reflectionMethod->getParameters();
 
         $paramNames = array_map(function( $item ){
             return $item->getName();
