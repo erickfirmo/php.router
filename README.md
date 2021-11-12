@@ -6,7 +6,7 @@ Object-oriented PHP router
 
 
 <p align="center">
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/erickfirmo/php-router?color=%2304D361">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/erickfirmo/php.router?color=%2304D361">
 
   <a href="https://erickfirmo.dev">
     <img alt="Made by Erick Firmo" src="https://img.shields.io/badge/made%20by-Erick%20Firmo-%2304D361">
