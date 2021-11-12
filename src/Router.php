@@ -176,12 +176,16 @@ class Router
     // Define request
     public function setRequest(string $requestVarName, $request) : void
     {
+        if (!is_array($request) && !is_object($request)) {
+            throw new \InvalidArgumentException('Argument 2 passed to '.__METHOD__.' must be of the type Object or array, '.gettype($request).' given.');
+        }
+
         $this->requestVarName = $requestVarName;
         $this->request = $request;
     }
 
     // Define nome da rota e argumentos que serão passados
-    public function setRoute($route, array $segments_map) : void
+    public function setRoute(array $route, array $segments_map) : void
     {
         $array_url = explode('/', $this->request_path());
         array_shift($array_url);
