@@ -156,7 +156,8 @@ class Router {
     }
 
     // Verifica e define verbo http
-    public function checkHttpMethod(array $request) {
+    public function checkHttpMethod(array $request) : bool
+    {
 
         if($this->request_method() == 'POST')
             $this->httpMethod = (isset($request['_method']) && in_array($request['_method'], $this->acceptedHttpMethods)) ? $request['_method'] : 'post';
@@ -167,8 +168,15 @@ class Router {
         return $this->route['http_method'] == $this->httpMethod ? true : false;
     }
 
+    // Define request attributes
+    public function setRequestAttributes(array $attributes, Object $request) : void
+    {
+        $request->setAll($attributes);
+        $this->request = $request;
+    }
+
     /// Define request
-    public function setRequestAttributes($request)
+    public function setRequest($request) : void
     {
         $this->request = $request;
     }
@@ -211,17 +219,13 @@ class Router {
     public function run() {
 
         try {
-
-            $attributes = $this->request;
-
             // Define request padrão do router caso não esteja definida
             if(!$this->request) {
                 $this->request = new \Core\Request;
-                $attributes = $this->request->all();
             }
         
             // Define verbo http da requisição atual
-            if(!$this->checkHttpMethod($attributes)) {
+            if(!$this->checkHttpMethod($this->request->all())) {
                 // exception
                 http_response_code(404);
                 if(!$this->notFoundView) {
@@ -241,8 +245,6 @@ class Router {
             $methodName = $this->route['method'];
 
             // Invoca array de parametros do método que será chamado
-            #$paramNames = $this->get_method_argNames($controllerName, $methodName);
-
             $ReflectionMethod =  new \ReflectionMethod($controllerName, $methodName);
             $params = $ReflectionMethod->getParameters();
             $paramNames = array_map(function( $item ){
