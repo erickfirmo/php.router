@@ -54,7 +54,7 @@ Routes file example:
 ### Optional Settings
 
 #### Namespace
-If all of your manipulation classes are in the same namespace, you can set the default namespace to use in the router instance with `setNamespace ()`:
+If all of your manipulation classes are in the same namespace, you can set the default namespace to use in the router instance with `setNamespace(string $namespace)`:
 
 ```php
 <?php
@@ -63,8 +63,8 @@ If all of your manipulation classes are in the same namespace, you can set the d
 
 ```
 
-#### Error page
-By default, will be return a message error for routes not defined. You can set a custom page for this error, using `notFoundView()` method after instantiate the router:
+#### Error Page
+By default, will be return a message error for routes not defined. You can set a custom page for this error, using `notFoundView(string $view)` method after instantiate the router:
 ```php
 <?php
 
@@ -73,8 +73,8 @@ By default, will be return a message error for routes not defined. You can set a
 
 ```
 
-#### Passing Request
-We can pass a request to our router using the `setRequest(string $name, Object|array|string|int|float|bool|mix $request)` method. This value will be used as the first argument of the called method. Example of using the request parameter:
+#### Passing Request Values
+We can pass a request to our router using the `setRequest(string $name, Object|array $request)` method. This value will be used as the first argument of the called method. Example of using the request parameter:
 ```php
 <?php
 
