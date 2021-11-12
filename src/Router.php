@@ -17,19 +17,19 @@ class Router
     private $request;
     private $requestVarName = 'request';
 
-    // Retorna método de requisição http
+    // Return http request method
     private function request_method() : string
     {
         return $_SERVER['REQUEST_METHOD'];
     }
     
-    // Retorna path da url atual
+    // Return path from current url
     private function request_path() : string
     {
         return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     }
 
-    // Verifica e define verbo http
+    // Checks and sets http verb
     private function checkHttpMethod() : bool
     {
         if($this->request_method() == 'POST')
@@ -41,10 +41,9 @@ class Router
         return $this->route['http_method'] == $this->httpMethod ? true : false;
     }
 
-    // Cria a rota
+    // Creating route
     private function createRoute(string $httpMethod, string $path, string $controller, string $method, string $name='') : array
     {
-        // Criando rota
         $name = !$name ? $path : $name;
         $route['name'] = $name;
         $route['path'] = $path;
@@ -55,7 +54,7 @@ class Router
         return $route;
     }
 
-    // Cria mapa de chaves dos parametros passados na rota
+    // Creates a key map of the parameters passed in the route
     private function createSegmentsMap(string $path, array $segments_map=[]) : array
     {
         $array_path = explode('/', $path);
@@ -67,7 +66,7 @@ class Router
         return $segments_map;
     }
 
-    // Define nome da rota e argumentos que serão passados
+    // Defines route name and arguments that will be passed
     private function setRoute(array $route, array $segments_map) : void
     {
         $array_url = explode('/', $this->request_path());
@@ -96,25 +95,24 @@ class Router
             }
         }
 
-        // Inserindo na lista de rotas
+        // Inserting in the route list
         $this->routeList[$route['http_method']][$route['path']] = $route;
     }
 
 
-    // Retorna namespace dos controllers
+    // Return controllers namespace
     private function getNamespace() : string
     {
         return $this->namespace;
     }
 
-
-    // Define namespace dos controllers
+    // Define controllers namespace
     public function setNamespace(string $namespace) : void
     {
         $this->namespace = $namespace;
     }
 
-    // Define arquivo de visualização para erro 404
+    // Set preview file to 404 error
     public function notFoundView(string $view) : void
     {
         $this->notFoundView = $view;
@@ -131,7 +129,7 @@ class Router
         $this->request = $request;
     }
 
-    // Pega array de parametros de um método
+    // Gets an array of parameters from a method
     private function get_method_argNames(string $class, string $method) : array
     {
         $reflectionMethod =  new \ReflectionMethod($class, $method);
@@ -145,52 +143,52 @@ class Router
         return $paramNames;
     }
 
-    // Executa rota já definida
+    // Run the router
     public function run()
     {
         try {
-            // Define verbo http da requisição atual
+            // Check http verb of current request
             if(!$this->checkHttpMethod()) {
-                // exception
+                // Exception
                 http_response_code(404);
                 if(!$this->notFoundView) {
                     header("HTTP/1.0 404 Not Found");
-                    print '404 Not Found';
+                    throw new \Exception('404 Not Found');
                     exit();
                 }
                 include $this->notFoundView;
                 exit();
             }
 
-            // Pega e inverte array de argumentos da rota
+            // Get and invert route argument array
             $this->arguments = $this->route['segments'];
 
-            // Definindo controller e método
+            // Defining controller and method
             $controllerName = $this->route['controller'];
             $methodName = $this->route['method'];
 
-            // Invoca array de parametros do método que será chamado
+            // Invoke array of parameters of the method to be called
             $ReflectionMethod =  new \ReflectionMethod($controllerName, $methodName);
             $params = $ReflectionMethod->getParameters();
             $paramNames = array_map(function( $item ){
                 return $item->getName();
             }, $params);
 
-            // Verifica se existe $request como argmento do método
+            // Checks for request as method argument
             if(isset($paramNames[0]) && $paramNames[0] == $this->requestVarName && $this->request)
             {
-                // Adiciona objeto $request a lista de argumentos
+                // Add request object to argument list
                 $this->arguments = array_reverse($this->arguments);
                 array_push($this->arguments, $this->request);
                 $this->arguments = array_reverse($this->arguments);
             }
 
-            // Validando tipo de dado dos parametros
+            // Validating data type of parameters
             foreach ($params as $key => $p)
             {
-                // Verifica se há tipo configurado
+                // Checks for configured type
                 if($p->getType()) {
-                    // Verifica se é um inteiro
+                    // Check if it is an integer
                     if(isset($this->arguments[$key]))
                     {
                         if($p->getType()->getName() == 'int')
@@ -199,7 +197,7 @@ class Router
                                 throw new \InvalidArgumentException('Argument '.($key+1).' passed to Router must be of the type '.$p->getType()->getName().', '.gettype($this->arguments[$key]).' given.');
                             }
         
-                        // Verifica se é uma string
+                        // Check if it's a string
                         } elseif($p->getType()->getName() == 'string') {
                             if (!is_string($this->arguments[$key])) {
                                 throw new \InvalidArgumentException('Argument '.($key+1).'2 passed to Router must be of the type '.$p->getType()->getName().', '.gettype($this->arguments[$key]).' given.');
@@ -222,84 +220,84 @@ class Router
         }
     }
 
-    // Cria rota GET
+    // Create GET route
     public function get(string $path, string $controller, string $method, string $name='') : void
     {
-        // Criando rota
+        // Creating route
         $route = $this->createRoute('get', $path, $controller, $method, $name);
 
         if(!$name)
             $name = $path;
 
-        // Definindo array de argumentos/segmentos da rota (passar para o construct do route)
+        // Defining route arguments/segments array
         $segments_map = $this->createSegmentsMap($path);
 
-        // Define nome da rota que será executada
+        // Defines name of the route that will be executed
         $this->setRoute($route, $segments_map);
 
     }
 
-    // Cria rota POST
+    // Create POST route
     public function post(string $path, string $controller, string $method, string $name='') : void
     {
-        // Criando rota
+        // Creating route
         $route = $this->createRoute('post', $path, $controller, $method, $name);
 
         if(!$name)
             $name = $path;
 
-        // Definindo array de argumentos/segmentos da rota (passar para o construct do route)
+        // Defining route arguments/segments array
         $segments_map = $this->createSegmentsMap($path);
 
-        // Define nome da rota que será executada
+        // Defines name of the route that will be executed
         $this->setRoute($route, $segments_map);
     }
 
-    // Cria rota PUT
+    // Create PUT route
     public function put(string $path, string $controller, string $method, string $name='') : void
     {
-        // Criando rota
+        // Creating route
         $route = $this->createRoute('put', $path, $controller, $method, $name);
 
         if(!$name)
             $name = $path;
 
-        // Definindo array de argumentos/segmentos da rota (passar para o construct do route)
+        // Defining route arguments/segments array
         $segments_map = $this->createSegmentsMap($path);
 
-        // Define nome da rota que será executada
+        // Defines name of the route that will be executed
         $this->setRoute($route, $segments_map);
     }
 
-    // Cria rota PATCH
+    // Create PATCH route
     public function patch(string $path, string $controller, string $method, string $name='') : void
     {
-        // Criando rota
+        // Creating route
         $route = $this->createRoute('patch', $path, $controller, $method, $name);
 
         if(!$name)
             $name = $path;
 
-        // Definindo array de argumentos/segmentos da rota (passar para o construct do route)
+        // Defining route arguments/segments array
         $segments_map = $this->createSegmentsMap($path);
 
-        // Define nome da rota que será executada
+        // Defines name of the route that will be executed
         $this->setRoute($route, $segments_map);
     }
 
-    // Cria rota DELETE
+    // Create DELETE route
     public function delete(string $path, string $controller, string $method, string $name='') : void
     {
-        // Criando rota
+        // Creating route
         $route = $this->createRoute('delete', $path, $controller, $method, $name);
 
         if(!$name)
             $name = $path;
 
-        // Definindo array de argumentos/segmentos da rota (passarar para o construct do route)
+        // Defining route arguments/segments array
         $segments_map = $this->createSegmentsMap($path);
 
-        // Define nome da rota que será executada
+        // Defines name of the route that will be executed
         $this->setRoute($route, $segments_map);
     }
 }
