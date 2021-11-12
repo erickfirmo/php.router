@@ -47,10 +47,10 @@ Examples:
 ```
 
 
-```
 
 ### Namespace
 If all of your manipulation classes are in the same namespace, you can set the default namespace to use in the router instance with `setNamespace ()`:
+
 ```php
 <?php
 
