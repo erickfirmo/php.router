@@ -2,8 +2,8 @@
 
 namespace ErickFirmo;
 
-class Router {
-
+class Router
+{
     public $namespace = '';
     public $routeName;
     public $getRoutes = [];
