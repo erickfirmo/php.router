@@ -44,9 +44,8 @@ Examples:
   $router->put('/examples/update/{id}', ExampleController::class, 'update', 'examples.update');
   $router->patch('/examples/update/{id}', ExampleController::class, 'update', 'examples.update');
   $router->delete('/examples/destroy/{id}', ExampleController::class, 'delete', 'examples.destroy');
+
 ```
-
-
 
 ### Namespace
 If all of your manipulation classes are in the same namespace, you can set the default namespace to use in the router instance with `setNamespace ()`:
@@ -57,9 +56,10 @@ If all of your manipulation classes are in the same namespace, you can set the d
   $router->setNamespace('App\Controllers\\');
   $router->get('/examples', ExampleController::class, 'index', 'examples.index');
   $router->post('/examples/store', ExampleController::class, 'store', 'examples.store');
+
 ```
 
-## Error page
+### Error page
 By default, will be return a message error for routes not defined. You can set a custom page for this error, using `notFoundView()` method after instantiate the router:
 ```php
 <?php
@@ -71,8 +71,53 @@ By default, will be return a message error for routes not defined. You can set a
   $router->notFoundView(__DIR__.'/../views/errors/404.php');
 
 ```
+### Passing Request
+Podemos passar um request para nosso router usando o método `setRequest($name, $request)`. Esse valor será usado como primeiro argumento do método chamado. Example:
+```php
+<?php
+
+  // Criando array com dados da requisição
+  $request = $_SERVER['REQUEST_METHOD'] == 'POST' ? $_POST : $_GET;
+
+  // Passando dados da requisição
+  $router->setRequest('request', $request);
+
+  // Definindo a rota
+  $router->put('/examples/{id}', ExampleController::class, 'myMethod', 'examples.myMethod');
+
+```
+Using the request parameter:
+```php
+<?php
+
+  class ExampleController
+  {
+    public function myMethod(array $request, int $id)
+    {
+      echo $request['name'];
+      echo $id;
+    }
+
+  }
+
+```
+
+Também podemos passar um objeto como parametro:
+
+```php
+<?php
+
+  class ExampleController
+  {
+    public function index(Object $request, int $id)
+    {
+      echo $request['name'];
+      echo $id;
+    }
+
+  }
 
 <!--## License -->
 
 
-<!--<a href="https://erickfirmo.dev" target="_blank">Érick Firmo</a>-->
+<a href="https://erickfirmo.dev" target="_blank">Érick Firmo</a>
