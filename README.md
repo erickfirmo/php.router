@@ -3,7 +3,7 @@ Simple object-oriented PHP router. developed by Érick Firmo (BR) http://erickfi
 
 
 ## Requirements
-- PHP >= 5.4
+- PHP >= 7
 - <a href="https://github.com/erickfirmo/.htaccess/blob/master/.htaccess" target="_blank">URL rewrite</a>
 
 
