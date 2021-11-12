@@ -1,3 +1,20 @@
+## Router
+
+<blockquote align="center">
+Object-oriented PHP router
+</blockquote>
+
+
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/erickfirmo/php-router?color=%2304D361">
+
+  <a href="https://erickfirmo.dev">
+    <img alt="Made by Erick Firmo" src="https://img.shields.io/badge/made%20by-Erick%20Firmo-%2304D361">
+  </a>
+
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361">
+</p>
+
 # Introduction
 Simple object-oriented PHP router. Developed by Érick Firmo (BR) https://erickfirmo.dev
 
@@ -122,6 +139,12 @@ MIT License.
 
 See [LICENSE](LICENSE) for details.
 
+
+<hr/>
+
+<h3 align="center">
+<a href="http://linkedin.com/in/XXXXX">Connect me in LinkedIn</a> | <a href="http://behance.net/XXXX">See my Behance</a> | <a href="https://erickfirmo.dev">Click here to go to my CV</a>
+</h3>
 
 
 
