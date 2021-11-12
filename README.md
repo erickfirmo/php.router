@@ -115,7 +115,7 @@ We can also pass an object as a parameter:
   {
     public function index(Object $request, int $id)
     {
-      echo $request['name'];
+      echo $request->name;
       echo $id;
     }
 
