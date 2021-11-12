@@ -1,11 +1,14 @@
 <?php
 
 $router = new \ErickFirmo\Router;
-$router->get(['/examples', 'ExampleController@select']);
-//$router->get(['/examples/{$id}', 'ExampleController@findById']);
-//$router->post(['/examples/store', 'ExampleController@store']);
-//$router->put(['/examples/{$id}', 'ExampleController@update']);
-//$router->patch(['/examples/{$id}', 'ExampleController@update']);
-//$router->delete(['/examples/{$id}', 'ExampleController@delete']);
+$router->get('/', HomeController::class, 'index', 'home');
+#$router->get('/customer', CustomerController::class, 'index');
+#$router->get('/customer/create', CustomerController::class, 'create', 'customers.create');
+##$router->get('/customer/edit/{$id}', CustomerController::class, 'edit');
+#$router->get('/customer/{id}', CustomerController::class, 'show', 'customers.show');
+#$router->get('/customer/create', CustomerController::class, 'create', 'customers.create');
+#$router->post('/customer/store', CustomerController::class, 'store');
+#$router->put('/customer/update/{$id}', CustomerController::class, 'update');
+#$router->delete('/customer/destroy/{$id}', CustomerController::class, 'destroy');
 $router->run();
 
