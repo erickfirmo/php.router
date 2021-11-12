@@ -1,5 +1,5 @@
 # Router
-Simple object-oriented PHP router. developed by Érick Firmo (BR) http://erickfirmo.dev
+Simple object-oriented PHP router. Developed by Érick Firmo (BR) https://erickfirmo.dev
 
 
 ## Requirements
