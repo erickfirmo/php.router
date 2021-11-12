@@ -1,8 +1,8 @@
-# Router
+# Introduction
 Simple object-oriented PHP router. Developed by Érick Firmo (BR) https://erickfirmo.dev
 
 
-## Requirements
+## :electric_plug: Prerequisites
 - PHP >= 7
 - <a href="https://github.com/erickfirmo/.htaccess/blob/master/.htaccess" target="_blank">URL rewrite</a>
 
@@ -116,7 +116,13 @@ We can also pass an object as a parameter:
 ```
 
 
-<!--## License -->
+## :copyright: License
+
+MIT License.
+
+See [LICENSE](LICENSE) for details.
+
+
 
 
 <a href="https://erickfirmo.dev" target="_blank">Érick Firmo</a>
