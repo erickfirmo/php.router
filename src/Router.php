@@ -11,7 +11,7 @@ class Router {
     public $putRoutes = [];
     public $patchRoutes = [];
     public $deleteRoutes = [];
-    public $routeList = [];
+    public $routeList = ['get', 'post', 'put', 'patch', 'delete'];
     public $method;
     public $controller;
     public $parameterIndex = null;
@@ -21,7 +21,8 @@ class Router {
     public $acceptedHttpMethods = ['get', 'post', 'put', 'patch', 'delete'];
     public $httpMethod = 'get';
     public $route = [];
-    
+    public $request;
+
     // Define namespace dos controllers
     public function setNamespace($namespace) {
         $this->namespace = $namespace;
@@ -46,7 +47,8 @@ class Router {
     }
 
     // Cria mapa de chaves dos parametros passados na rota
-    public function createSegmentsMap($path, $segments_map=[]) {
+    public function createSegmentsMap(string $path, $segments_map=[]) : array
+    {
         $array_path = explode('/', $path);
         array_shift($array_path);
         foreach($array_path as $key => $segment) 
@@ -54,29 +56,6 @@ class Router {
                 $segments_map[$key] = $segment;
 
         return $segments_map;
-    }
-
-    // Define nome da rota e argumentos que serão passados
-    public function setRoute($route, array $segments_map) {
-        $array_url = explode('/', $this->request_path());
-        array_shift($array_url);
-
-        $args = [];
-
-        foreach ($segments_map as $key => $segment) {
-            if(array_key_exists($key, $array_url)) {
-                array_push($args, $array_url[$key]);
-                $array_url[$key] = $segment;
-            }
-            
-        }
-
-        $routeName = '/' . implode('/', $array_url);
-        $route['segments'] = $args;
-
-        if($routeName == $route['path']) {
-            $this->route = $route;
-        }
     }
 
     // Retorna método de requisição http
@@ -101,14 +80,15 @@ class Router {
         // Criando rota
         $route = $this->createRoute('get', $path, $controller, $method, $name);
 
+        if(!$name)
+            $name = $path;
+
         // Definindo array de argumentos/segmentos da rota (passar para o construct do route)
         $segments_map = $this->createSegmentsMap($path);
 
-        // Inserindo na lista de rotas
-        $this->routeList['get'][$name] = $route;
-
         // Define nome da rota que será executada
         $this->setRoute($route, $segments_map);
+
     }
 
     // Cria rota POST
@@ -117,11 +97,11 @@ class Router {
         // Criando rota
         $route = $this->createRoute('post', $path, $controller, $method, $name);
 
+        if(!$name)
+            $name = $path;
+
         // Definindo array de argumentos/segmentos da rota (passar para o construct do route)
         $segments_map = $this->createSegmentsMap($path);
-
-        // Inserindo na lista de rotas
-        $this->routeList['post'][$name] = $route;
 
         // Define nome da rota que será executada
         $this->setRoute($route, $segments_map);
@@ -133,11 +113,11 @@ class Router {
         // Criando rota
         $route = $this->createRoute('put', $path, $controller, $method, $name);
 
+        if(!$name)
+            $name = $path;
+
         // Definindo array de argumentos/segmentos da rota (passar para o construct do route)
         $segments_map = $this->createSegmentsMap($path);
-
-        // Inserindo na lista de rotas
-        $this->routeList['put'][$name] = $route;
 
         // Define nome da rota que será executada
         $this->setRoute($route, $segments_map);
@@ -149,11 +129,11 @@ class Router {
         // Criando rota
         $route = $this->createRoute('patch', $path, $controller, $method, $name);
 
+        if(!$name)
+            $name = $path;
+
         // Definindo array de argumentos/segmentos da rota (passar para o construct do route)
         $segments_map = $this->createSegmentsMap($path);
-
-        // Inserindo na lista de rotas
-        $this->routeList['patch'][$name] = $route;
 
         // Define nome da rota que será executada
         $this->setRoute($route, $segments_map);
@@ -165,11 +145,11 @@ class Router {
         // Criando rota
         $route = $this->createRoute('delete', $path, $controller, $method, $name);
 
+        if(!$name)
+            $name = $path;
+
         // Definindo array de argumentos/segmentos da rota (passarar para o construct do route)
         $segments_map = $this->createSegmentsMap($path);
-
-        // Inserindo na lista de rotas
-        $this->routeList['delete'][$name] = $route;
 
         // Define nome da rota que será executada
         $this->setRoute($route, $segments_map);
@@ -187,19 +167,61 @@ class Router {
         return $this->route['http_method'] == $this->httpMethod ? true : false;
     }
 
-    // Executa rota já definida
-    public function run(Object $request) {
+    /// Define request
+    public function setRequestAttributes($request)
+    {
+        $this->request = $request;
+    }
 
+    // Define nome da rota e argumentos que serão passados
+    public function setRoute($route, array $segments_map)
+    {
+        $array_url = explode('/', $this->request_path());
+        array_shift($array_url);
+
+        $args = [];
+        
+        foreach ($segments_map as $key => $segment) {
+            if(array_key_exists($key, $array_url)) {
+                array_push($args, $array_url[$key]);
+                $array_url[$key] = $segment;
+            }
+        }
+
+        $routeName = '/' . implode('/', $array_url);
+
+        $route['segments'] = $args;
+        
+        if($routeName == $route['path'] )
+        {
+            if(!isset($this->routeList[$this->httpMethod]))
+            {
+                $this->route = $route;
+            } elseif(!array_key_exists($this->request_path(), $this->routeList[$this->httpMethod])) {
+                $this->route = $route;
+            }
+        }
+
+        // Inserindo na lista de rotas
+        $this->routeList[$route['http_method']][$route['path']] = $route;
+
+    }
+
+    // Executa rota já definida
+    public function run() {
 
         try {
 
-            // Define request padrão do router caso não esteja definida
-            if(!$request) {
-                $request = new \Core\Request;
-            }
+            $attributes = $this->request;
 
+            // Define request padrão do router caso não esteja definida
+            if(!$this->request) {
+                $this->request = new \Core\Request;
+                $attributes = $this->request->all();
+            }
+        
             // Define verbo http da requisição atual
-            if(!$this->checkHttpMethod($request->all())) {
+            if(!$this->checkHttpMethod($attributes)) {
                 // exception
                 http_response_code(404);
                 if(!$this->notFoundView) {
@@ -232,7 +254,7 @@ class Router {
             {
                 // Adiciona objeto Request a lista de argumentos
                 $this->arguments = array_reverse($this->arguments);
-                array_push($this->arguments, $request);
+                array_push($this->arguments, $this->request);
                 $this->arguments = array_reverse($this->arguments);
             }
 
@@ -245,13 +267,13 @@ class Router {
                     if($p->getType()->getName() == 'int')
                     {
                         if (!is_numeric($this->arguments[$key])) {
-                            throw new \InvalidArgumentException('Invalid argument.');
+                            throw new \InvalidArgumentException('Invalid argument. int');
                         }
     
                     // Verifica se é uma string
                     } elseif($p->getType()->getName() == 'string') {
                         if (!is_string($this->arguments[$key])) {
-                            throw new \InvalidArgumentException('Invalid argument.');
+                            throw new \InvalidArgumentException('Invalid argument. string');
                         }
                     }
                 }
