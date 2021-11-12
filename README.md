@@ -28,9 +28,8 @@ composer require erickfirmo/router
 
   // Defining optional settings
 
-  // Load routes files
+  // Load routes file
   require_once __DIR__ . '/routes/web.php';
-  require_once __DIR__ . '/routes/api.php';
 
   // Run the router
   $router->run();
@@ -106,7 +105,7 @@ We can also pass an object as a parameter:
 
   class ExampleController
   {
-    public function index(Object $request, int $id)
+    public function myMethod(Object $request, int $id)
     {
       echo $request->name;
       echo $id;
