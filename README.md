@@ -143,7 +143,7 @@ See [LICENSE](LICENSE) for details.
 <hr/>
 
 <h3 align="center">
-<a href="http://linkedin.com/in/XXXXX">Connect me in LinkedIn</a> | <a href="http://behance.net/XXXX">See my Behance</a> | <a href="https://erickfirmo.dev">Click here to go to my CV</a>
+<a href="http://linkedin.com/in/XXXXX">Connect me in LinkedIn</a> | <a href="https://erickfirmo.dev">Click here to go to my CV</a>
 </h3>
 
 
