@@ -4,6 +4,7 @@
     "description": "PHP Router",
     "keywords": ["routing", "router"],
     "type": "library",
+    "license": "MIT",
     "authors": [
         {
         "name": "Érick Firmo",
