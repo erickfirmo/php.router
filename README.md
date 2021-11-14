@@ -1,4 +1,4 @@
-## Router
+<img alt="PHP Router" src="./logo.png">
 
 <blockquote align="center">
 Object-oriented PHP router
