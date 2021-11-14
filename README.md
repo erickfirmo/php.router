@@ -1,6 +1,6 @@
-<img alt="PHP Router" src="./logo.png">
 
 <blockquote align="center">
+<img alt="PHP Router" src="./logo.png">
 Object-oriented PHP router
 </blockquote>
 
