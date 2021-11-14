@@ -15,9 +15,10 @@ Simple object-oriented PHP router. Developed by Érick Firmo (BR) https://erickf
 
 <p align="center">
   <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/erickfirmo/php.router?color=%2304D361">
-
+  <img src="https://img.shields.io/packagist/dt/erickfirmo/router" alt="Total Downloads">
+  <img src="https://img.shields.io/packagist/v/erickfirmo/router" alt="Latest Stable Version">
   <a href="https://erickfirmo.dev">
-    <img alt="Made by Erick Firmo" src="https://img.shields.io/badge/made%20by-Erick%20Firmo-%2304D361">
+    <img alt="Made by Erick Firmo" src="https://img.shields.io/badge/made%20by-Érick%20Firmo-%2304D361">
   </a>
 
   <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361">
