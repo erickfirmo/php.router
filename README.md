@@ -149,7 +149,3 @@ See [LICENSE](LICENSE) for details.
 <h3 align="center">
 <a href="http://linkedin.com/in/érick-firmo-24615b166">Connect me in LinkedIn</a> | <a href="https://erickfirmo.dev">Click here to go to my CV</a>
 </h3>
-
-
-
-<a href="https://erickfirmo.dev" target="_blank">Érick Firmo</a>
