@@ -23,10 +23,6 @@ Simple object-oriented PHP router. Developed by Érick Firmo (BR) https://erickf
   <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361">
 </p>
 
-# Introduction
-Simple object-oriented PHP router. Developed by Érick Firmo (BR) https://erickfirmo.dev
-
-
 ## :electric_plug: Prerequisites
 - PHP >= 7
 - <a href="https://github.com/erickfirmo/.htaccess/blob/master/.htaccess" target="_blank">URL rewrite</a>
