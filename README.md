@@ -1,8 +1,16 @@
 
-<blockquote align="center">
+<p align="center">
 <img alt="PHP Router" src="./logo.png">
-Object-oriented PHP router
+</p>
+
+
+<h1 align="center">PHP Router Package</h1>
+
+<blockquote align="center">
+Simple object-oriented PHP router. Developed by Érick Firmo (BR) https://erickfirmo.dev
+
 </blockquote>
+
 
 
 <p align="center">
