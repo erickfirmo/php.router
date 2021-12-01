@@ -72,6 +72,15 @@ Routes file example:
 
 ```
 
+### Setting request HTTP verb in forms
+To set the HTTP verb in your form action, create a input named `_method` with the verb value. The accepted values are `PUT`, `PATCH`, `DELETE`. Example:
+
+```
+  <input type="hidden" name="_method" value="PUT">
+```
+
+This setting is not necessary to use routes GET or POST.
+
 ### Optional Settings
 
 #### Namespace
