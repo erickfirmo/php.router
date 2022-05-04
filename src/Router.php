@@ -293,7 +293,7 @@ class Router
      * @param string|null $name
      * @return void
      */
-    public function registerRoute(string $httMethod, string $path, string $controller, string $method, ?string $name = null) : void
+    public function registerRoute(string $httMethod, string $path, string $controller, string $method, ?string $name = '') : void
     {
         // Creating route
         $route = $this->createRoute($httMethod, $path, $controller, $method, $name);
@@ -319,7 +319,7 @@ class Router
      * @param string|null $name
      * @return void
      */
-    public function get(string $path, string $controller, string $method, ?string $name = null) : void
+    public function get(string $path, string $controller, string $method, ?string $name = '') : void
     {
         $this->registerRoute('get', $path, $controller, $method, $name);
     }
@@ -333,7 +333,7 @@ class Router
      * @param string|null $name
      * @return void
      */
-    public function post(string $path, string $controller, string $method, ?string $name = null) : void
+    public function post(string $path, string $controller, string $method, ?string $name = '') : void
     {
         $this->registerRoute('post', $path, $controller, $method, $name);
     }
@@ -347,7 +347,7 @@ class Router
      * @param string|null $name
      * @return void
      */
-    public function put(string $path, string $controller, string $method, ?string $name = null) : void
+    public function put(string $path, string $controller, string $method, ?string $name = '') : void
     {
         $this->registerRoute('put', $path, $controller, $method, $name);
     }
@@ -361,7 +361,7 @@ class Router
      * @param string|null $name
      * @return void
      */
-    public function patch(string $path, string $controller, string $method, ?string $name = null) : void
+    public function patch(string $path, string $controller, string $method, ?string $name = '') : void
     {
         $this->registerRoute('patch', $path, $controller, $method, $name);
     }
@@ -375,7 +375,7 @@ class Router
      * @param string|null $name
      * @return void
      */
-    public function delete(string $path, string $controller, string $method, ?string $name = null) : void
+    public function delete(string $path, string $controller, string $method, ?string $name = '') : void
     {
         $this->registerRoute('delete', $path, $controller, $method, $name);
     }
