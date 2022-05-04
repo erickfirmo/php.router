@@ -17,19 +17,31 @@ class Router
     private $request;
     private $requestVarName = 'request';
 
-    // Return http request method
+    /**
+     * Return http request method
+     *
+     * @return string
+     */
     private function requestMethod() : string
     {
         return $_SERVER['REQUEST_METHOD'];
     }
     
-    // Return path from current url
+    /**
+     * Return path from current url
+     *
+     * @return string
+     */
     private function request_path() : string
     {
         return parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
     }
 
-    // Checks and sets http verb
+    /**
+     * Checks and sets http verb
+     *
+     * @return boolean
+     */
     private function checkHttpMethod() : bool
     {
         if($this->requestMethod() == 'POST')
@@ -41,7 +53,16 @@ class Router
         return $this->route['http_method'] == $this->httpMethod ? true : false;
     }
 
-    // Creating route
+    /**
+     * Creating route
+     *
+     * @param string $httpMethod
+     * @param string $path
+     * @param string $controller
+     * @param string $method
+     * @param string $name
+     * @return array
+     */
     private function createRoute(string $httpMethod, string $path, string $controller, string $method, string $name='') : array
     {
         $name = !$name ? $path : $name;
@@ -54,7 +75,13 @@ class Router
         return $route;
     }
 
-    // Creates a key map of the parameters passed in the route
+    /**
+     * Creates a key map of the parameters passed in the route
+     *
+     * @param string $path
+     * @param array $segments_map
+     * @return array
+     */
     private function createSegmentsMap(string $path, array $segments_map=[]) : array
     {
         $array_path = explode('/', $path);
@@ -66,7 +93,13 @@ class Router
         return $segments_map;
     }
 
-    // Defines route name and arguments that will be passed
+    /**
+     * Defines route name and arguments that will be passed
+     *
+     * @param array $route
+     * @param array $segments_map
+     * @return void
+     */
     private function setRoute(array $route, array $segments_map) : void
     {
         $array_url = explode('/', $this->request_path());
@@ -100,25 +133,45 @@ class Router
     }
 
 
-    // Return controllers namespace
+    /**
+     * Return controllers namespace
+     *
+     * @return string
+     */
     private function getNamespace() : string
     {
         return $this->namespace;
     }
 
-    // Define controllers namespace
+    /**
+     * Define controllers namespace
+     *
+     * @param string $namespace
+     * @return void
+     */
     public function setNamespace(string $namespace) : void
     {
         $this->namespace = $namespace;
     }
 
-    // Set preview file to 404 error
+    /**
+     * Set preview file to 404 error
+     *
+     * @param string $view
+     * @return void
+     */
     public function notFoundView(string $view) : void
     {
         $this->notFoundView = $view;
     }
 
-    // Define request
+    /**
+     * Define request
+     *
+     * @param string $requestVarName
+     * @param [type] $request
+     * @return void
+     */
     public function setRequest(string $requestVarName, $request) : void
     {
         if (!is_array($request) && !is_object($request)) {
@@ -129,7 +182,13 @@ class Router
         $this->request = $request;
     }
 
-    // Gets an array of parameters from a method
+    /**
+     * Gets an array of parameters from a method
+     *
+     * @param string $class
+     * @param string $method
+     * @return array
+     */
     private function getMethodArgNames(string $class, string $method) : array
     {
         $reflectionMethod =  new \ReflectionMethod($class, $method);
@@ -143,7 +202,11 @@ class Router
         return $paramNames;
     }
 
-    // Run the router
+    /**
+     * Run the router
+     *
+     * @return void
+     */
     public function run()
     {
         try {
@@ -220,7 +283,16 @@ class Router
         }
     }
 
-    // Register routes
+    /**
+     * Register routes
+     *
+     * @param string $httMethod
+     * @param string $path
+     * @param string $controller
+     * @param string $method
+     * @param string|null $name
+     * @return void
+     */
     public function registerRoute(string $httMethod, string $path, string $controller, string $method, ?string $name = null) : void
     {
         // Creating route
@@ -238,31 +310,71 @@ class Router
 
     }
 
-    // Create GET route
+    /**
+     * Create GET route
+     *
+     * @param string $path
+     * @param string $controller
+     * @param string $method
+     * @param string|null $name
+     * @return void
+     */
     public function get(string $path, string $controller, string $method, ?string $name = null) : void
     {
         $this->registerRoute('get', $path, $controller, $method, $name);
     }
 
-    // Create POST route
+    /**
+     * Create POST route
+     *
+     * @param string $path
+     * @param string $controller
+     * @param string $method
+     * @param string|null $name
+     * @return void
+     */
     public function post(string $path, string $controller, string $method, ?string $name = null) : void
     {
         $this->registerRoute('post', $path, $controller, $method, $name);
     }
 
-    // Create PUT route
+    /**
+     * Create PUT route
+     *
+     * @param string $path
+     * @param string $controller
+     * @param string $method
+     * @param string|null $name
+     * @return void
+     */
     public function put(string $path, string $controller, string $method, ?string $name = null) : void
     {
         $this->registerRoute('put', $path, $controller, $method, $name);
     }
 
-    // Create PATCH route
+    /**
+     * Create PATCH route
+     *
+     * @param string $path
+     * @param string $controller
+     * @param string $method
+     * @param string|null $name
+     * @return void
+     */
     public function patch(string $path, string $controller, string $method, ?string $name = null) : void
     {
         $this->registerRoute('patch', $path, $controller, $method, $name);
     }
 
-    // Create DELETE route
+    /**
+     * Create DELETE route
+     *
+     * @param string $path
+     * @param string $controller
+     * @param string $method
+     * @param string|null $name
+     * @return void
+     */
     public function delete(string $path, string $controller, string $method, ?string $name = null) : void
     {
         $this->registerRoute('delete', $path, $controller, $method, $name);
