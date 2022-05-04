@@ -18,7 +18,7 @@ class Router
     private $requestVarName = 'request';
 
     // Return http request method
-    private function request_method() : string
+    private function requestMethod() : string
     {
         return $_SERVER['REQUEST_METHOD'];
     }
@@ -32,7 +32,7 @@ class Router
     // Checks and sets http verb
     private function checkHttpMethod() : bool
     {
-        if($this->request_method() == 'POST')
+        if($this->requestMethod() == 'POST')
             $this->httpMethod = (isset($_POST['_method']) && in_array($_POST['_method'], $this->acceptedHttpMethods)) ? $_POST['_method'] : 'post';
 
         if(!$this->route)
@@ -130,7 +130,7 @@ class Router
     }
 
     // Gets an array of parameters from a method
-    private function get_method_argNames(string $class, string $method) : array
+    private function getMethodArgNames(string $class, string $method) : array
     {
         $reflectionMethod =  new \ReflectionMethod($class, $method);
 
@@ -220,14 +220,15 @@ class Router
         }
     }
 
-    // Create GET route
-    public function get(string $path, string $controller, string $method, string $name='') : void
+    // Register routes
+    public function registerRoute(string $httMethod, string $path, string $controller, string $method, ?string $name = null) : void
     {
         // Creating route
-        $route = $this->createRoute('get', $path, $controller, $method, $name);
+        $route = $this->createRoute($httMethod, $path, $controller, $method, $name);
 
-        if(!$name)
+        if(!$name) {
             $name = $path;
+        }
 
         // Defining route arguments/segments array
         $segments_map = $this->createSegmentsMap($path);
@@ -235,69 +236,35 @@ class Router
         // Defines name of the route that will be executed
         $this->setRoute($route, $segments_map);
 
+    }
+
+    // Create GET route
+    public function get(string $path, string $controller, string $method, ?string $name = null) : void
+    {
+        $this->registerRoute('get', $path, $controller, $method, $name);
     }
 
     // Create POST route
-    public function post(string $path, string $controller, string $method, string $name='') : void
+    public function post(string $path, string $controller, string $method, ?string $name = null) : void
     {
-        // Creating route
-        $route = $this->createRoute('post', $path, $controller, $method, $name);
-
-        if(!$name)
-            $name = $path;
-
-        // Defining route arguments/segments array
-        $segments_map = $this->createSegmentsMap($path);
-
-        // Defines name of the route that will be executed
-        $this->setRoute($route, $segments_map);
+        $this->registerRoute('post', $path, $controller, $method, $name);
     }
 
     // Create PUT route
-    public function put(string $path, string $controller, string $method, string $name='') : void
+    public function put(string $path, string $controller, string $method, ?string $name = null) : void
     {
-        // Creating route
-        $route = $this->createRoute('put', $path, $controller, $method, $name);
-
-        if(!$name)
-            $name = $path;
-
-        // Defining route arguments/segments array
-        $segments_map = $this->createSegmentsMap($path);
-
-        // Defines name of the route that will be executed
-        $this->setRoute($route, $segments_map);
+        $this->registerRoute('put', $path, $controller, $method, $name);
     }
 
     // Create PATCH route
-    public function patch(string $path, string $controller, string $method, string $name='') : void
+    public function patch(string $path, string $controller, string $method, ?string $name = null) : void
     {
-        // Creating route
-        $route = $this->createRoute('patch', $path, $controller, $method, $name);
-
-        if(!$name)
-            $name = $path;
-
-        // Defining route arguments/segments array
-        $segments_map = $this->createSegmentsMap($path);
-
-        // Defines name of the route that will be executed
-        $this->setRoute($route, $segments_map);
+        $this->registerRoute('patch', $path, $controller, $method, $name);
     }
 
     // Create DELETE route
-    public function delete(string $path, string $controller, string $method, string $name='') : void
+    public function delete(string $path, string $controller, string $method, ?string $name = null) : void
     {
-        // Creating route
-        $route = $this->createRoute('delete', $path, $controller, $method, $name);
-
-        if(!$name)
-            $name = $path;
-
-        // Defining route arguments/segments array
-        $segments_map = $this->createSegmentsMap($path);
-
-        // Defines name of the route that will be executed
-        $this->setRoute($route, $segments_map);
+        $this->registerRoute('delete', $path, $controller, $method, $name);
     }
 }
