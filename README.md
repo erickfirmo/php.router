@@ -34,8 +34,41 @@ A simple object-oriented PHP router. Developed by Érick Firmo (BR) https://eric
 
 ## :electric_plug: Prerequisites
 
-* PHP >= 7
-* <a href="https://github.com/erickfirmo/.htaccess/blob/master/.htaccess" target="_blank">URL rewriting</a>
+* PHP >= 7.1
+* URL rewriting
+
+The router requires your web server to forward requests to your application's `index.php` entry point.
+
+### Apache
+
+If you are using Apache, you can use `mod_rewrite` with a `.htaccess` file.
+
+Example:
+
+```apache
+<IfModule mod_rewrite.c>
+    RewriteEngine on
+    RewriteCond %{SCRIPT_FILENAME} !-f
+    RewriteCond %{SCRIPT_FILENAME} !-d
+    RewriteCond %{SCRIPT_FILENAME} !-l
+    RewriteRule ^(.*)$ /index.php/$1
+</IfModule>
+```
+
+### Nginx
+
+If you are using Nginx, `.htaccess` is not supported. Instead, URL rewriting must be configured in your Nginx server configuration.
+
+For example:
+
+```nginx
+location / {
+    try_files $uri $uri/ /index.php/$uri;
+}
+```
+
+Make sure your PHP configuration is also set up to process the application's `index.php` file.
+
 
 ## Installation
 
