@@ -8,7 +8,7 @@
 
 <blockquote align="center">
 
-A simple object-oriented PHP router. Developed by Érick Firmo (BR) https://erickfirmo.dev
+A simple object-oriented PHP router. Developed by Erick Firmo (BR) https://erickfirmo.dev
 
 </blockquote>
 
@@ -20,13 +20,7 @@ A simple object-oriented PHP router. Developed by Érick Firmo (BR) https://eric
 
   <img src="https://img.shields.io/packagist/v/erickfirmo/router" alt="Latest Stable Version">
 
-  <a href="https://erickfirmo.dev">
-
-```
-<img alt="Made by Erick Firmo" src="https://img.shields.io/badge/made%20by-Érick%20Firmo-%2304D361">
-```
-
-  </a>
+  <img alt="Made by Erick Firmo" src="https://img.shields.io/badge/made%20by-Erick%20Firmo-%2304D361">
 
   <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361">
 
